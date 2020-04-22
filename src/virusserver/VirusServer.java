@@ -5,6 +5,8 @@
  */
 package virusserver;
 
+import virusserver.model.Servidor;
+
 /**
  *
  * @author Roberth
@@ -15,7 +17,8 @@ public class VirusServer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Servidor server = new Servidor();
+        server.start();
     }
     
 }
