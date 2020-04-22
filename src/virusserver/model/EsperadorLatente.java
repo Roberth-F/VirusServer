@@ -37,10 +37,15 @@ public class EsperadorLatente {
             this.Escuchando = true;
             try {
                 serverSocket = new ServerSocket(7777);
+                System.out.println("Esperando...");
                 canalComunicacion = serverSocket.accept();
                 informacion = new DataInputStream(canalComunicacion.getInputStream());
+                System.out.print("SERVER:");
                 String str = informacion.readUTF();
-                System.out.println(str);
+                System.out.print(str);
+                canalComunicacion.getInputStream().close();
+                informacion.close();
+                canalComunicacion.close();
                 return true;
             } catch (IOException ex) {
                 System.err.println("NO SE PUDO HABILITAR PUERTO INICIAL DE ESCUCHA");
@@ -64,5 +69,5 @@ public class EsperadorLatente {
     public void setEscuchando(boolean escuchando) {
         this.Escuchando = escuchando;
     }
-    
+
 }

@@ -5,9 +5,7 @@
  */
 package virusserver.model;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -16,10 +14,8 @@ import java.util.Queue;
  */
 public class Servidor {
 
-    private List<EsperadorLatente> Esperadores;     // Esperan las peticiones un cliente específico.
     private Queue<Peticion> Peticiones;             //Podría ser inesesaria si funciona la lista de hilos.
-    private EsperadorLatente ConectorInicial;       //Espera a los jugadores que se quieran unir y los conecta de ser posible.
-    private List<Thread> Hilos;                     // Hilos de ejecución, uno por cada jugador.
+    private EsperadorLatente vahiaDeConexion;       //Espera a los jugadores que se quieran unir y los conecta de ser posible.
     private int JugadoresConectados;                // Máximo soportará 5 jugadores
     private boolean EnJuego;                        // True si ya el juego comenzó.
 
@@ -28,12 +24,11 @@ public class Servidor {
     }
 
     public void start() {
-        Esperadores = new ArrayList<>();
         Peticiones = new LinkedList<>();
-        Hilos = new ArrayList<>();
         EnJuego = false;
-        ConectorInicial = new EsperadorLatente(7777, "");
-        ConectorInicial.escuchar(); //Salir y revisar si hay espcio aun;
+        while(true){
+            vahiaDeConexion = new EsperadorLatente(7777, "");
+            vahiaDeConexion.escuchar(); //Salir y revisar si hay espcio aun;
+        }
     }
-
 }
