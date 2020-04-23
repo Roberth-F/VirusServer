@@ -10,5 +10,19 @@ package virusserver.model;
  * @author Roberth
  */
 public class Peticion {
-    
+
+    private Object contenido;
+
+    public Peticion(Object dato) {
+        this.contenido = dato;
+    }
+
+    public Object getContenido() {
+        return contenido;
+    }
+
+    public void setContenido(Object contenido) {
+        this.contenido = contenido;
+    }
+
 }

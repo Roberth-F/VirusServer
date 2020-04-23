@@ -12,9 +12,9 @@ import java.util.Queue;
  *
  * @author Roberth :)
  */
-public class Servidor {
+public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha de los jugadores para enviarles actualizaciones.
 
-    private Queue<Peticion> Peticiones;             //Podría ser inesesaria si funciona la lista de hilos.
+    private Queue<Peticion> Peticiones;             //Cola de peticiones por atender en caso de que halla saturación.
     private EsperadorLatente vahiaDeConexion;       //Espera a los jugadores que se quieran unir y los conecta de ser posible.
     private int JugadoresConectados;                // Máximo soportará 5 jugadores
     private boolean EnJuego;                        // True si ya el juego comenzó.
@@ -26,9 +26,12 @@ public class Servidor {
     public void start() {
         Peticiones = new LinkedList<>();
         EnJuego = false;
-        while(true){
-            vahiaDeConexion = new EsperadorLatente(7777, "");
-            vahiaDeConexion.escuchar(); //Salir y revisar si hay espcio aun;
+        vahiaDeConexion = new EsperadorLatente(7777, "");
+        while (true) {
+            Peticion pet = vahiaDeConexion.escuchar();
+            String s = (String) pet.getContenido();
+            this.Peticiones.add(pet);
+            System.out.println(s);
         }
     }
 }

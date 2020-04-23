@@ -5,12 +5,14 @@
  */
 package virusserver.model;
 
+import com.google.gson.Gson;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import virusserver.util.clasePrueba;
 
 /**
  *
@@ -19,55 +21,38 @@ import java.util.logging.Logger;
 public class EsperadorLatente {
 
     private final int Port;
-    private boolean Escuchando;
     private final String IpClient;
     private ServerSocket serverSocket;
     private Socket canalComunicacion;
-    private Peticion peticion;
     private DataInputStream informacion;   //Información que recibe el esperador de parte del cliente.
 
     public EsperadorLatente(int port, String ipClient) {
         this.Port = port;
         this.IpClient = ipClient;
-        this.Escuchando = false;
-    }
-
-    public boolean escuchar() {
-        if (!isEscuchando()) {
-            this.Escuchando = true;
-            try {
-                serverSocket = new ServerSocket(7777);
-                System.out.println("Esperando...");
-                canalComunicacion = serverSocket.accept();
-                informacion = new DataInputStream(canalComunicacion.getInputStream());
-                System.out.print("SERVER:");
-                String str = informacion.readUTF();
-                System.out.print(str);
-                canalComunicacion.getInputStream().close();
-                informacion.close();
-                canalComunicacion.close();
-                return true;
-            } catch (IOException ex) {
-                System.err.println("NO SE PUDO HABILITAR PUERTO INICIAL DE ESCUCHA");
-                Logger.getLogger(EsperadorLatente.class.getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                return false;
-            }
-        }
-        return false;
-    }
-
-    public void ensordecer() {
-        if (isEscuchando()) {
-
+        try {
+            this.serverSocket = new ServerSocket(7777);
+        } catch (IOException IO) {
+            System.err.println("NO SE PUDO HABILITAR PUERTO INICIAL DE ESCUCHA");
+            Logger.getLogger(EsperadorLatente.class.getName()).log(Level.SEVERE, IO.getMessage(), IO);
         }
     }
 
-    public boolean isEscuchando() {
-        return Escuchando;
-    }
-
-    public void setEscuchando(boolean escuchando) {
-        this.Escuchando = escuchando;
+    public Peticion escuchar() {
+        try {
+            System.out.println("Esperando...");
+            canalComunicacion = serverSocket.accept();
+            informacion = new DataInputStream(canalComunicacion.getInputStream());
+            String str = informacion.readUTF();
+            clasePrueba obj = new Gson().fromJson(str, clasePrueba.class);
+            canalComunicacion.getInputStream().close();
+            informacion.close();
+            canalComunicacion.close();
+            return new Peticion(str);
+        } catch (IOException IO) {
+            System.err.println("ERROR AL RECIBIR INFORMACIÓN");
+            Logger.getLogger(EsperadorLatente.class.getName()).log(Level.SEVERE, IO.getMessage(), IO);
+        }
+        return null;
     }
 
 }
