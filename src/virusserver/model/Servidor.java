@@ -23,7 +23,7 @@ import virusserver.util.Respuesta;
  */
 public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha de los jugadores para enviarles actualizaciones.
 
-    private final Queue<Peticion> peticiones;           //Cola de peticiones por atender en caso de que halla saturación.
+    private final Queue<Peticion> peticiones;            //Cola de peticiones por atender en caso de que halla saturación.
     private Escuchador bahiaDeConexion;             //Espera a los jugadores que se quieran unir y los conecta de ser posible.
     private List<Jugador> jugadoresConectados;      // Máximo soportará 6 jugadores
     private int etapaJuego;                        // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
@@ -83,7 +83,10 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             resp = new Respuesta(false, "Ya se está armando una partida en este momento.");
         } else {
             resp = new Respuesta(true, "");
+            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
+            etapaJuego = 1;
         }
+
         new Responderdor().responder(resp, pet);
     }
 
@@ -98,6 +101,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         } else {
             resp = new Respuesta(true, "");
         }
+        jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
         new Responderdor().responder(resp, pet);
     }
 
