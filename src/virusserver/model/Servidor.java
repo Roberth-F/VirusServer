@@ -80,8 +80,6 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         Respuesta resp;
         if (etapaJuego != 0) {
             resp = new Respuesta(false, "Ya el juego comenzó, no puedes iniciar partidas nuevas hasta que la actual termine");
-        } else if (!jugadoresConectados.isEmpty()) {
-            resp = new Respuesta(false, "Ya se está armando una partida en este momento.");
         } else {
             resp = new Respuesta(true, "");
             jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
@@ -93,20 +91,22 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
 
     public void unirsePertida(Peticion pet) {
         Respuesta resp;
-        if (etapaJuego != 2) {
-            resp = new Respuesta(false, "Ya el juego comenzó, te podrás unir en la próxima ronda");
-        } else if (etapaJuego == 0) {
+        if (etapaJuego == 0) {
             resp = new Respuesta(false, "Aun no hay una partida organizada");
+        } else if (etapaJuego == 2) {
+            resp = new Respuesta(false, "Ya el juego comenzó, te podrás unir en la próxima ronda");
         } else if (jugadoresConectados.size() >= 6) {
             resp = new Respuesta(false, "Ya esta partida está llena");
         } else {
             resp = new Respuesta(true, "");
+            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
         }
-        jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
         new Responderdor().responder(resp, pet);
-        new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
+        if (resp.getEstado()) {
+            new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
+        }
     }
-    
+
     private Method getSeverMethod(String nombre) {
         try {
             return this.getClass().getDeclaredMethod(nombre, Peticion.class);
