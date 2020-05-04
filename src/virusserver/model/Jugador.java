@@ -5,13 +5,17 @@
  */
 package virusserver.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  *
  * @author Roberth
  */
 public class Jugador {
 
+    @SerializedName("nombreJug")
     private String nombreJugador;
+    @SerializedName("nombreAvt")
     private String nombreAvatar;
     private int puerto;
     private String direccionIP;
@@ -23,15 +27,15 @@ public class Jugador {
         this.direccionIP = direccionIP;
     }
 
-    void setNombre(String nombreJugador) {
+    public void setNombre(String nombreJugador) {
         this.nombreJugador = nombreJugador;
     }
 
-    String getNombre() {
+    public String getNombre() {
         return nombreJugador;
     }
 
-    void setNombreAvatar(String nombreAvatar) {
+    public void setNombreAvatar(String nombreAvatar) {
         this.nombreAvatar = nombreAvatar;
     }
 
@@ -39,19 +43,19 @@ public class Jugador {
         return this.nombreAvatar;
     }
 
-    void setPuerto(int puerto) {
+    public void setPuerto(int puerto) {
         this.puerto = puerto;
     }
 
-    int getPuerto() {
+    public int getPuerto() {
         return puerto;
     }
 
-    void setIP(String ip) {
+    public void setIP(String ip) {
         this.direccionIP = ip;
     }
 
-    String getIP() {
+    public String getIP() {
         return this.direccionIP;
     }
 

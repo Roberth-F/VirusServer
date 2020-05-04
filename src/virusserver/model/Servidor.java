@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import virusserver.util.Actualizador;
 import virusserver.util.Responderdor;
 import virusserver.util.Respuesta;
 
@@ -25,7 +26,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
 
     private final Queue<Peticion> peticiones;            //Cola de peticiones por atender en caso de que halla saturación.
     private Escuchador bahiaDeConexion;             //Espera a los jugadores que se quieran unir y los conecta de ser posible.
-    private List<Jugador> jugadoresConectados;      // Máximo soportará 6 jugadores
+    private final List<Jugador> jugadoresConectados;      // Máximo soportará 6 jugadores
     private int etapaJuego;                        // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
     private Thread hiloRespondedor;                 //Es el que se encarga de enviar las respuestas.
 
@@ -103,8 +104,9 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         }
         jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
         new Responderdor().responder(resp, pet);
+        new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
     }
-
+    
     private Method getSeverMethod(String nombre) {
         try {
             return this.getClass().getDeclaredMethod(nombre, Peticion.class);
