@@ -15,7 +15,7 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import virusserver.util.Actualizador;
-import virusserver.util.Responderdor;
+import virusserver.util.Respondedor;
 import virusserver.util.Respuesta;
 
 /**
@@ -24,11 +24,12 @@ import virusserver.util.Respuesta;
  */
 public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha de los jugadores para enviarles actualizaciones.
 
-    private final Queue<Peticion> peticiones;            //Cola de peticiones por atender en caso de que halla saturación.
-    private Escuchador bahiaDeConexion;             //Espera a los jugadores que se quieran unir y los conecta de ser posible.
-    private final List<Jugador> jugadoresConectados;      // Máximo soportará 6 jugadores
-    private int etapaJuego;                        // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
-    private Thread hiloRespondedor;                 //Es el que se encarga de enviar las respuestas.
+    private final Queue<Peticion> peticiones;          //Cola de peticiones por atender en caso de que halla saturación.
+    private Escuchador bahiaDeConexion;                //Espera a los jugadores que se quieran unir y los conecta de ser posible.
+    private final List<Jugador> jugadoresConectados;   // Máximo soportará 6 jugadores
+    private int etapaJuego;                            // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
+    private Thread hiloRespondedor;                    //Es el que se encarga de enviar las respuestas.
+    private int votosDeInicio;                         // Votos de inicio de partida que se han recibido.
 
     public Servidor() {
         peticiones = new LinkedList<>();
@@ -70,7 +71,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException ex) {
-                    System.err.print("ALGO RARO PASÓ EN LA LINEA 59 DEL SERVIDOR :V");
+                    System.err.print("ALGO RARO PASÓ AL QUERER PAUSAR EL SERVIDOR :V");
                 }
             }
         }
@@ -86,7 +87,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             etapaJuego = 1;
         }
 
-        new Responderdor().responder(resp, pet);
+        new Respondedor().responder(resp, pet);
     }
 
     public void unirsePertida(Peticion pet) {
@@ -101,10 +102,34 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             resp = new Respuesta(true, "");
             jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
         }
-        new Responderdor().responder(resp, pet);
+        new Respondedor().responder(resp, pet);
         if (resp.getEstado()) {
             new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
         }
+    }
+
+    public void nuevoJugadorListo(Peticion pet) {
+        this.votosDeInicio++;
+        votosDeInicio = (votosDeInicio > jugadoresConectados.size()) ? jugadoresConectados.size() : votosDeInicio; //Seguridad por si hay más votos que gente unida
+        System.out.println("Nuevo voto de inicio. Votos de inicio: " + String.valueOf(votosDeInicio) + " Jugadores conectados: " + jugadoresConectados.size());
+    }
+
+    public void startGame(Peticion pet) {
+        Respuesta resp;
+        if (jugadoresConectados.size() < 3) {
+            resp = new Respuesta(false, "No se puede inicir el juego debido a que hay menos de 3 jugadores conectados.");
+        } else if (votosDeInicio < jugadoresConectados.size() - 1) {
+            resp = new Respuesta(false, "No se puede inicir el juego debido a que no todos los jugadores han indicado que están listos para comenzar.");
+        } else {
+            resp = new Respuesta(true, "");
+
+        }
+        new Respondedor().responder(resp, pet);
+        forzarInicio();
+    }
+
+    public void forzarInicio() {
+        //TODO ----> Enviar de iniciar partida a todos los jugadores conectados .
     }
 
     private Method getSeverMethod(String nombre) {
@@ -115,5 +140,4 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             return null;
         }
     }
-
 }

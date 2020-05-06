@@ -19,7 +19,7 @@ import virusserver.model.Peticion;
  *
  * @author Roberth
  */
-public class Responderdor {
+public class Respondedor {
 
     /**
      * Envía una respuesta a único cliente.
@@ -38,9 +38,9 @@ public class Responderdor {
             sock.close();
             System.out.println("Envida respuesta con estado " + respuesta.getEstado() + "\n");
         } catch (UnknownHostException UHE) {
-            Logger.getLogger(Responderdor.class.getName()).log(Level.SEVERE, null, UHE);
+            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
         } catch (IOException IO) {
-            Logger.getLogger(Responderdor.class.getName()).log(Level.SEVERE, null, IO);
+            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
         }
     }
 }

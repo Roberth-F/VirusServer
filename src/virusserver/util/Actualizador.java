@@ -46,9 +46,9 @@ public class Actualizador {
                     datos.close();
                     sock.close();
                 } catch (UnknownHostException UHE) {
-                    Logger.getLogger(Responderdor.class.getName()).log(Level.SEVERE, null, UHE);
+                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
                 } catch (IOException IO) {
-                    Logger.getLogger(Responderdor.class.getName()).log(Level.SEVERE, null, IO);
+                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
                 }
             });
             enviador.start();
