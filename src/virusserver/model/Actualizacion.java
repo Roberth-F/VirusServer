@@ -15,8 +15,10 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Actualizacion {
 
-    @SerializedName("action")
+    @SerializedName("method")
     private String action;
+    @SerializedName("class")
+    private String modulo;
     @SerializedName("nuevosJugadores")
     private String listaJugadores;
 

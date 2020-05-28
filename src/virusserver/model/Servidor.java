@@ -53,6 +53,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         }
     }
 
+    @SuppressWarnings("SleepWhileInLoop")
     public void ejecutarPeticiones() {
         while (true) {
             boolean vacia;
@@ -111,7 +112,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
     public void nuevoJugadorListo(Peticion pet) {
         this.votosDeInicio++;
         votosDeInicio = (votosDeInicio > jugadoresConectados.size()) ? jugadoresConectados.size() : votosDeInicio; //Seguridad por si hay más votos que gente unida
-        System.out.println("Nuevo voto de inicio. Votos de inicio: " + String.valueOf(votosDeInicio) + " Jugadores conectados: " + jugadoresConectados.size());
+        System.out.println("Nuevo voto de inicio. Votos de inicio: " + String.valueOf(votosDeInicio) + " Jugadores conectados: " + jugadoresConectados.size() + "\n");
     }
 
     public void startGame(Peticion pet) {
