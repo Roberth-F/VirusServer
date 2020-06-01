@@ -19,12 +19,17 @@ public class Jugador {
     private String nombreAvatar;
     private int puerto;
     private String direccionIP;
+    @SerializedName("host:")
+    private boolean host;
+    private boolean listo;
 
-    public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP) {
+    public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
         this.nombreAvatar = nombreAvatar;
         this.puerto = puerto;
         this.direccionIP = direccionIP;
+        this.listo = false;
+        this.host = host;
     }
 
     public void setNombre(String nombreJugador) {
@@ -55,8 +60,23 @@ public class Jugador {
         this.direccionIP = ip;
     }
 
+    public boolean isListo() {
+        return listo;
+    }
+
+    public void setListo(boolean listo) {
+        this.listo = listo;
+    }
+
     public String getIP() {
         return this.direccionIP;
     }
 
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
+    }
 }

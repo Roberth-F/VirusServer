@@ -31,4 +31,11 @@ public class Actualizacion {
         action = "nuevosJugadores";
         listaJugadores = json;
     }
+    
+    /**
+     *Prepara actalización que vuelve host al jugador que la reciba.
+     */
+    public void volverHost(){
+        action = "volverHost";
+    }
 }

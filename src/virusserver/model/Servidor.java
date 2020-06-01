@@ -84,7 +84,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             resp = new Respuesta(false, "Ya el juego comenzó, no puedes iniciar partidas nuevas hasta que la actual termine");
         } else {
             resp = new Respuesta(true, "");
-            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
+            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp(), true));
             etapaJuego = 1;
         }
 
@@ -101,7 +101,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             resp = new Respuesta(false, "Ya esta partida está llena");
         } else {
             resp = new Respuesta(true, "");
-            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp()));
+            jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp(), false));
         }
         new Respondedor().responder(resp, pet);
         if (resp.getEstado()) {
@@ -110,9 +110,51 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
     }
 
     public void nuevoJugadorListo(Peticion pet) {
-        this.votosDeInicio++;
-        votosDeInicio = (votosDeInicio > jugadoresConectados.size()) ? jugadoresConectados.size() : votosDeInicio; //Seguridad por si hay más votos que gente unida
+        jugadoresConectados.forEach(act -> {
+            if (act.getNombre().equals(pet.getNombreJugador()) && !act.isListo()) {
+                act.setListo(true);
+                votosDeInicio = Math.toIntExact(jugadoresConectados.stream().filter(jug -> jug.isListo()).count()); //Recuenta jugadores listos
+            }
+        });
         System.out.println("Nuevo voto de inicio. Votos de inicio: " + String.valueOf(votosDeInicio) + " Jugadores conectados: " + jugadoresConectados.size() + "\n");
+    }
+
+    public void desconectarJugador(Peticion pet) {
+        Jugador jugador = null;
+        for (Jugador act : jugadoresConectados) {
+            if (act.getIP().equals(pet.getIp()) && act.getPuerto() == pet.getPuerto()) {       //Se busca en la lista el jugador que va a salir
+                jugador = act;
+                break;
+            }
+        }
+
+        if (!jugador.isHost()) {                       //No va a llegar nulo, esta cosa está loca, no le hagan mente :v
+            if (etapaJuego == 1) {
+                jugadoresConectados.remove(jugador);
+                votosDeInicio = Math.toIntExact(jugadoresConectados.stream().filter(jug -> jug.isListo()).count());//Recalcula los votos de inicio
+                new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
+            } else if (etapaJuego == 2) {
+                //TODO ----> Que hacer en caso de que ya halla iniciado el juego.
+            }
+        } else {
+            jugadoresConectados.remove(jugador);
+            if (jugadoresConectados.isEmpty()) {     //En caso de ser el único jugador
+                votosDeInicio = 0;
+                etapaJuego = 0;
+                peticiones.clear();
+            } else {
+                if (etapaJuego == 2) {
+                    //TODO ----> Que hacer en caso de que ya halla iniciado el juego.
+                } else if (etapaJuego == 1) {
+                    votosDeInicio = Math.toIntExact(jugadoresConectados.stream().filter(jug -> jug.isListo()).count());//Recalcula los votos de inicio
+                    new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
+                }
+                Actualizacion act = new Actualizacion();
+                act.volverHost();
+                jugadoresConectados.get(0).setHost(true);
+                new Actualizador().volverHostAJUgador(jugadoresConectados.get(0), act);
+            }
+        }
     }
 
     public void startGame(Peticion pet) {

@@ -155,6 +155,4 @@ public class Peticion {
     public String getNombreAvatar() {
         return nombreAvatar;
     }
-    
-
 }
