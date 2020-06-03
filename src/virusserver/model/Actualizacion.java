@@ -38,4 +38,8 @@ public class Actualizacion {
     public void volverHost(){
         action = "volverHost";
     }
+    
+    public void vistaJuego(){
+        action = "modoJuego";
+    }
 }

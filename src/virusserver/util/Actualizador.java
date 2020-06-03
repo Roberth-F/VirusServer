@@ -70,4 +70,9 @@ public class Actualizador {
             Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
         }
     }
+    
+    public void cambiarAVistaJuego(List<Jugador> jugList){/////LALO ES AQUIIIIIII
+        Actualizacion act =new Actualizacion();
+        act.vistaJuego();
+    }
 }

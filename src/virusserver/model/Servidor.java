@@ -165,14 +165,13 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             resp = new Respuesta(false, "No se puede inicir el juego debido a que no todos los jugadores han indicado que están listos para comenzar.");
         } else {
             resp = new Respuesta(true, "");
-
         }
         new Respondedor().responder(resp, pet);
-        forzarInicio();
     }
 
-    public void forzarInicio() {
-        //TODO ----> Enviar de iniciar partida a todos los jugadores conectados .
+    public void forzarInicio(Peticion pet) {
+        //TODO ----> Enviar de iniciar partida a todos los jugadores conectados . AQUI LALO
+        System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
     }
 
     private Method getSeverMethod(String nombre) {
