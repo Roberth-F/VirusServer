@@ -15,6 +15,7 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import virusserver.util.Actualizador;
+import virusserver.util.ActualizarCartas;
 import virusserver.util.Respondedor;
 import virusserver.util.Respuesta;
 
@@ -171,6 +172,11 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
 
     public void forzarInicio(Peticion pet) {
         //TODO ----> Enviar de iniciar partida a todos los jugadores conectados . AQUI LALO
+        Actualizador act=new Actualizador();
+        act.cambiarAVistaJuego(jugadoresConectados);
+        ActualizarCartas cartas=new ActualizarCartas();
+        cartas.ListaCartas();
+        cartas.distribuirCartas(jugadoresConectados);
         System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
     }
 
