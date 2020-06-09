@@ -172,11 +172,20 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
 
     public void forzarInicio(Peticion pet) {
         //TODO ----> Enviar de iniciar partida a todos los jugadores conectados . AQUI LALO
-        Actualizador act=new Actualizador();
-        act.cambiarAVistaJuego(jugadoresConectados);
+       
         ActualizarCartas cartas=new ActualizarCartas();
         cartas.ListaCartas();
-        cartas.distribuirCartas(jugadoresConectados);
+        cartas.CargarCartasJugador(jugadoresConectados);
+        Actualizador act=new Actualizador();
+        act.actualizarDatos(jugadoresConectados);
+        act.cambiarAVistaJuego(jugadoresConectados);
+     
+        
+     
+        //cartas.distribuirCartas(jugadoresConectados);
+        
+        
+        //cartas.distribuirCartas(jugadoresConectados);
         System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
     }
 

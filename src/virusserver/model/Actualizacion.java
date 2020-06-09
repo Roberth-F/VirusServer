@@ -31,7 +31,10 @@ public class Actualizacion {
         action = "nuevosJugadores";
         listaJugadores = json;
     }
-    
+    public  void actualizarDatosNuevos(String json) {
+        action = "jugadoresPartida";
+        listaJugadores = json;}
+    /**)
     /**
      *Prepara actalización que vuelve host al jugador que la reciba.
      */

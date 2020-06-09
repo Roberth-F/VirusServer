@@ -23,7 +23,7 @@ public class Jugador {
     @SerializedName("host:")
     private boolean host;
     private boolean listo;
-    private ArrayList<Cartas>cartasActuales=new ArrayList<>();
+    public ArrayList<Cartas>cartasActuales=new ArrayList<>();
     public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
         this.nombreAvatar = nombreAvatar;
@@ -83,4 +83,8 @@ public class Jugador {
     public void misCartas(Cartas cartas){
       cartasActuales.add(cartas);
     }    
+    public ArrayList<Cartas> verLista(){
+
+      return cartasActuales;
+    }
 }

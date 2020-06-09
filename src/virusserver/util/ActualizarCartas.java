@@ -129,7 +129,7 @@ MazoCartasJugadores.forEach(datos->{
    
         });
     }
-    public void CargarCastasJugador(List<Jugador>listaJu){
+    public void CargarCartasJugador(List<Jugador>listaJu){
       for(int x=0;x<3;x++){
        listaJu.forEach(jugador->{      
        Cartas carta=new Cartas(MazoCompleto.get(0).getNombreCarta(),MazoCompleto.get(0).getTipo(),MazoCompleto.get(0).getNumeroCarta());
