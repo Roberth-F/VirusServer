@@ -179,7 +179,12 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         Actualizador act=new Actualizador();
         act.actualizarDatos(jugadoresConectados);
         act.cambiarAVistaJuego(jugadoresConectados);
-     
+        jugadoresConectados.forEach(Juga->{
+           Juga.verLista().forEach(carta->{
+             System.out.print(carta.getNombreCarta()+carta.getNumeroCarta()+carta.getTipo());
+           });
+           
+        });
         
      
         //cartas.distribuirCartas(jugadoresConectados);
