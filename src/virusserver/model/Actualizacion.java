@@ -32,7 +32,8 @@ public class Actualizacion {
         listaJugadores = json;
     }
     public  void actualizarDatosNuevos(String json) {
-        action = "jugadoresPartida";
+        this.modulo = "SalaDeJuego";
+        action = "actualizarListasDeJuego";
         listaJugadores = json;}
     /**)
     /**

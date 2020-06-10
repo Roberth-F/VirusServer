@@ -59,8 +59,6 @@ public class Actualizador {
     }
       public void actualizarDatos(List<Jugador> jugList) {
         
-     
-
         Type typeListJug = new TypeToken<List<Jugador>>() {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);

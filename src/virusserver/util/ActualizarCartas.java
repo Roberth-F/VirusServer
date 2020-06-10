@@ -114,21 +114,7 @@ public class ActualizarCartas {
 //        });
         
     }
-    public  void distribuirCartas( List<Jugador>listaJu){
-      for(int x=0;x<3;x++){
-        listaJu.forEach(jugador->{      
-               jugador.getNombre();
-              Cartas carta=new Cartas(MazoCompleto.get(0).getNombreCarta(),MazoCompleto.get(0).getTipo(),MazoCompleto.get(0).getNumeroCarta(),jugador.getNombre());
-              MazoCartasJugadores.add(carta);    
-             MazoCompleto.remove(0);
-        });
-      }
-MazoCartasJugadores.forEach(datos->{
-           
-         System.out.println("Nombre:"+datos.getNombreCarta()+" Tipo:"+datos.getTipo()+" Cantidad:"+datos.getNumeroCarta()+" Dueño:"+datos.getDueñoCarta());
-   
-        });
-    }
+
     public void CargarCartasJugador(List<Jugador>listaJu){
       for(int x=0;x<3;x++){
        listaJu.forEach(jugador->{      

@@ -171,25 +171,25 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
     }
 
     public void forzarInicio(Peticion pet) {
-        //TODO ----> Enviar de iniciar partida a todos los jugadores conectados . AQUI LALO
-       
-        ActualizarCartas cartas=new ActualizarCartas();
+        Actualizador act = new Actualizador();
+        act.cambiarAVistaJuego(jugadoresConectados);
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException ex) {
+            System.err.print("ALGO RARO PASÓ AL QUERER PAUSAR EL SERVIDOR :V");
+        }
+        ActualizarCartas cartas = new ActualizarCartas();
         cartas.ListaCartas();
         cartas.CargarCartasJugador(jugadoresConectados);
-        Actualizador act=new Actualizador();
+        act = new Actualizador();
         act.actualizarDatos(jugadoresConectados);
-        act.cambiarAVistaJuego(jugadoresConectados);
-        jugadoresConectados.forEach(Juga->{
-           Juga.verLista().forEach(carta->{
-             System.out.print(carta.getNombreCarta()+carta.getNumeroCarta()+carta.getTipo());
-           });
-           
+        jugadoresConectados.forEach(Juga -> {
+            Juga.verLista().forEach(carta -> {
+                System.out.print(carta.getNombreCarta() + carta.getNumeroCarta() + carta.getTipo());
+            });
         });
-        
-     
+
         //cartas.distribuirCartas(jugadoresConectados);
-        
-        
         //cartas.distribuirCartas(jugadoresConectados);
         System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
     }
