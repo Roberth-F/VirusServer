@@ -58,7 +58,10 @@ public class Escuchador {
             canalComunicacion.getInputStream().close();
             informacion.close();
             canalComunicacion.close();
-            return pet;
+            
+              return pet;
+            
+          
         } catch (IOException IO) {
             System.err.println("ERROR AL RECIBIR INFORMACIÓN");
             Logger.getLogger(Escuchador.class.getName()).log(Level.SEVERE, IO.getMessage(), IO);

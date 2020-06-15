@@ -8,6 +8,7 @@ package virusserver.model;
 import com.google.gson.annotations.SerializedName;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -34,6 +35,8 @@ public class Peticion {
     private int puertoImadiato;  //En caso de ser petición con respuesta a este puerto se envia la respuerta.
     @SerializedName("avatar")
     private String nombreAvatar;
+    @SerializedName("jugadores")
+    private List<Jugador> jugadores;
 
     public Peticion() {
     }
@@ -65,7 +68,23 @@ public class Peticion {
         this.puertoImadiato = puertoImediato;
         this.nombreAvatar = avatar;
     }
-
+    ///Actualizar cartas
+       public void actualizarLista(List<Jugador>jugadores, int puertoImediato) {
+        try {
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException UE) {
+            System.err.println("ERROR OBTENIENDO DIRECCIÓN IP DEL EQUIPO");
+            Logger.getLogger(Peticion.class.getName()).log(Level.SEVERE, UE.getMessage(), UE);
+        }
+  
+        this.metodo = "actualizarLista";
+        this.jugadores = jugadores;
+        this.puertoImadiato = puertoImediato;
+        
+    }
+public List<Jugador> getJugadores(){
+ return  jugadores;
+}
     /**
      * Obtiene nombre del método que desea ser llamado
      *

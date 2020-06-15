@@ -17,7 +17,7 @@ import virusserver.model.Jugador;
  */
 public class ActualizarCartas {
      ArrayList<Cartas>MazoCompleto=new ArrayList<>() ;
-      ArrayList<Cartas>MazoCartasJugadores=new ArrayList<>() ;
+     // ArrayList<Cartas>MazoCartasJugadores=new ArrayList<>() ;
     public void ListaCartas(){
        
         Cartas carta;
@@ -114,7 +114,13 @@ public class ActualizarCartas {
 //        });
         
     }
+public void ElimarCarta(){
+ MazoCompleto.remove(0);
+}
+public Cartas SolicitarUnaCarta(){
+return MazoCompleto.get(0);
 
+}
     public void CargarCartasJugador(List<Jugador>listaJu){
       for(int x=0;x<3;x++){
        listaJu.forEach(jugador->{      

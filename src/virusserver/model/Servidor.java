@@ -31,6 +31,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
     private int etapaJuego;                            // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
     private Thread hiloRespondedor;                    //Es el que se encarga de enviar las respuestas.
     private int votosDeInicio;                         // Votos de inicio de partida que se han recibido.
+    ActualizarCartas actualizarListasCartas = new ActualizarCartas();
 
     public Servidor() {
         peticiones = new LinkedList<>();
@@ -48,6 +49,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         hiloRespondedor.start();                                                //Arranca ejecución de segundo hilo.
         while (true) {
             Peticion pet = bahiaDeConexion.escuchar();
+            System.out.print("Entre al while");
             synchronized (this.peticiones) {
                 this.peticiones.add(pet);
             }
@@ -63,7 +65,10 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             }
             if (!vacia) {
                 Peticion pet = peticiones.poll();
+                System.out.println("Mostrar Petecion" + pet.getMetodo());
+
                 Method metodo = getSeverMethod(pet.getMetodo());
+                //System.out.println("La peticion es"+pet.getMetodo()+""+pet.getJugadores());
                 try {
                     metodo.invoke(this, pet);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -108,6 +113,32 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         if (resp.getEstado()) {
             new Actualizador().actualizarSalasDeEspera(jugadoresConectados);
         }
+    }
+
+    public void actualizarLista(Peticion pet) {
+        Respuesta res = new Respuesta(true, "");
+        jugadoresConectados.forEach(jugadorServ -> {
+            pet.getJugadores().forEach(jugadorCliente -> {
+                if (jugadorServ.getNombre().equals(jugadorCliente.getNombre())) {
+                    if (jugadorCliente.verLista().size() != jugadorServ.verLista().size()) {
+                        jugadorServ.verLista().clear();
+                        jugadorCliente.verLista().forEach(misCartasCliente -> {
+                            System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
+                            jugadorServ.misCartas(misCartasCliente);
+                        });
+                    }
+                    if (jugadorCliente.verCartasTablero().size() != jugadorServ.verCartasTablero().size()) {
+                        jugadorServ.verCartasTablero().clear();
+                        jugadorCliente.verCartasTablero().forEach(misCartasTablero -> {
+                            jugadorServ.CartasTablero(misCartasTablero);
+                        });
+                    }
+                }
+            });
+        });
+
+        Actualizador act = new Actualizador();
+        act.actualizarDatos(jugadoresConectados);
     }
 
     public void nuevoJugadorListo(Peticion pet) {
@@ -170,6 +201,12 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         new Respondedor().responder(resp, pet);
     }
 
+    public void solicitarCarta(Peticion pet) {
+
+        new Respondedor().ResponderConCarta(actualizarListasCartas.SolicitarUnaCarta(), pet);
+        actualizarListasCartas.ElimarCarta();
+    }
+
     public void forzarInicio(Peticion pet) {
         Actualizador act = new Actualizador();
         act.cambiarAVistaJuego(jugadoresConectados);
@@ -178,9 +215,9 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         } catch (InterruptedException ex) {
             System.err.print("ALGO RARO PASÓ AL QUERER PAUSAR EL SERVIDOR :V");
         }
-        ActualizarCartas cartas = new ActualizarCartas();
-        cartas.ListaCartas();
-        cartas.CargarCartasJugador(jugadoresConectados);
+        // ActualizarCartas cartas = new ActualizarCartas();
+        actualizarListasCartas.ListaCartas();
+        actualizarListasCartas.CargarCartasJugador(jugadoresConectados);
         act = new Actualizador();
         act.actualizarDatos(jugadoresConectados);
         jugadoresConectados.forEach(Juga -> {

@@ -24,6 +24,7 @@ public class Jugador {
     private boolean host;
     private boolean listo;
     public ArrayList<Cartas>cartasActuales=new ArrayList<>();
+    public  ArrayList<Cartas>cartasJugadas=new ArrayList<>();
     public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
         this.nombreAvatar = nombreAvatar;
@@ -86,5 +87,12 @@ public class Jugador {
     public ArrayList<Cartas> verLista(){
 
       return cartasActuales;
+    }
+    public  void CartasTablero(Cartas cartas ){
+     cartasJugadas.add(cartas);
+    }
+     public ArrayList<Cartas> verCartasTablero(){
+
+      return cartasJugadas;
     }
 }
