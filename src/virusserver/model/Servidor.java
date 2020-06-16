@@ -123,7 +123,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
                     if (jugadorCliente.verLista().size() != jugadorServ.verLista().size()) {
                         jugadorServ.verLista().clear();
                         jugadorCliente.verLista().forEach(misCartasCliente -> {
-                            System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
+                  //          System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
                             jugadorServ.misCartas(misCartasCliente);
                         });
                     }
@@ -222,7 +222,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         act.actualizarDatos(jugadoresConectados);
         jugadoresConectados.forEach(Juga -> {
             Juga.verLista().forEach(carta -> {
-                System.out.print(carta.getNombreCarta() + carta.getNumeroCarta() + carta.getTipo());
+        //        System.out.print(carta.getNombreCarta() + carta.getNumeroCarta() + carta.getTipo());
             });
         });
 

@@ -53,7 +53,7 @@ public class Respondedor {
             sock.getOutputStream().close();
             datos.close();
             sock.close();
-            System.out.println("Envida respuesta con estado " + respuesta.getNombreCarta() + "\n");
+       //     System.out.println("Envida respuesta con estado " + respuesta.getNombreCarta() + "\n");
         } catch (UnknownHostException UHE) {
             Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
         } catch (IOException IO) {
