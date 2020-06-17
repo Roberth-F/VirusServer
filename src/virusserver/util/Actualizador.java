@@ -57,8 +57,8 @@ public class Actualizador {
         }
     }
 
-    public void actualizarDatos(List<Jugador> jugList) {
-
+    public void cargarDatosInicio(List<Jugador> jugList) {
+        
         Type typeListJug = new TypeToken<List<Jugador>>() {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);
@@ -127,7 +127,7 @@ public class Actualizador {
         }
     }
 
-    public void cambiarAVistaJuego(List<Jugador> jugList) {/////LALO ES AQUIIIIIII
+    public void cambiarAVistaJuego(List<Jugador> jugList) {
         Actualizacion act = new Actualizacion();
         act.vistaJuego();
         for (Jugador actual : jugList) {
