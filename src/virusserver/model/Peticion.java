@@ -37,6 +37,9 @@ public class Peticion {
     private String nombreAvatar;
     @SerializedName("jugadores")
     private List<Jugador> jugadores;
+    @SerializedName("cartasDesecho")
+    private List<Carta> castasDesecho;
+
     @SerializedName("chat")
     private List<ChatGlobal> chat;
     public Peticion() {
@@ -69,20 +72,26 @@ public class Peticion {
         this.puertoImadiato = puertoImediato;
         this.nombreAvatar = avatar;
     }
+
     ///Actualizar cartas
-       public void actualizarLista(List<Jugador>jugadores, int puertoImediato) {
+    public void actualizarLista(List<Jugador> jugadores, int puertoImediato) {
         try {
             this.ip = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException UE) {
             System.err.println("ERROR OBTENIENDO DIRECCIÓN IP DEL EQUIPO");
             Logger.getLogger(Peticion.class.getName()).log(Level.SEVERE, UE.getMessage(), UE);
         }
-  
+
         this.metodo = "actualizarLista";
         this.jugadores = jugadores;
         this.puertoImadiato = puertoImediato;
-        
+
     }
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
         public void actualizarMensaje(List<ChatGlobal>chat, int puertoImediato) {
         try {
             this.ip = InetAddress.getLocalHost().getHostAddress();
@@ -94,12 +103,8 @@ public class Peticion {
         this.metodo = "actualizarMensaje";
         this.chat = this.chat;
         this.puertoImadiato = puertoImediato;
-        
     }
-public List<Jugador> getJugadores(){
- return  jugadores;
-}
-
+        
     public List<ChatGlobal> getChat() {
         return chat;
     }
@@ -192,4 +197,9 @@ public List<Jugador> getJugadores(){
     public String getNombreAvatar() {
         return nombreAvatar;
     }
+
+    public List<Carta> getCastasDesecho() {
+        return castasDesecho;
+    }
+    
 }

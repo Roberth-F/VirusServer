@@ -231,6 +231,10 @@ public class Servidor {
     public void solicitarCarta(Peticion pet) {
         new Respondedor().ResponderConCarta(manejadorCartas.SolicitarUnaCarta(), pet);
     }
+    
+    public void desecharCartas(Peticion pet){
+        manejadorCartas.desecharCarta(pet.getCastasDesecho()); 
+    }
     public void forzarChat(Peticion pet) {
     System.out.print("HOLA SOY TU PADRE:"+pet.getMetodo());
         Actualizador act= new Actualizador();
