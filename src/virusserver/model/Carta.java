@@ -14,9 +14,11 @@ import com.google.gson.annotations.SerializedName;
 public class Carta {
 
     @SerializedName("tipoCarta")
-    String tipoCarta;
+    private String tipoCarta;
+    @SerializedName("numeroCarta")
+    private int cantidad;
     @SerializedName("color")
-    String color;
+    private String color;
 
     public Carta(String tipo, String color) {
         this.tipoCarta = tipo;
@@ -26,13 +28,25 @@ public class Carta {
     public void setTipo(String tipoCarta) {
         this.tipoCarta = tipoCarta;
     }
-    
+
     public String getTipo() {
         return tipoCarta;
     }
 
     public String getColor() {
         return color;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    public int getCantidad() {
+        return cantidad;
     }
 
 }

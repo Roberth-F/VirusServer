@@ -219,6 +219,10 @@ public class Servidor {
     public void solicitarCarta(Peticion pet) {
         new Respondedor().ResponderConCarta(manejadorCartas.SolicitarUnaCarta(), pet);
     }
+    
+    public void desecharCartas(Peticion pet){
+        manejadorCartas.desecharCarta(pet.getCastasDesecho()); 
+    }
 
     private Method getSeverMethod(String nombre) {
         try {

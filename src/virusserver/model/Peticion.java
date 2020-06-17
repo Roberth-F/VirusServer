@@ -37,6 +37,8 @@ public class Peticion {
     private String nombreAvatar;
     @SerializedName("jugadores")
     private List<Jugador> jugadores;
+    @SerializedName("cartasDesecho")
+    private List<Carta> castasDesecho;
 
     public Peticion() {
     }
@@ -68,23 +70,26 @@ public class Peticion {
         this.puertoImadiato = puertoImediato;
         this.nombreAvatar = avatar;
     }
+
     ///Actualizar cartas
-       public void actualizarLista(List<Jugador>jugadores, int puertoImediato) {
+    public void actualizarLista(List<Jugador> jugadores, int puertoImediato) {
         try {
             this.ip = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException UE) {
             System.err.println("ERROR OBTENIENDO DIRECCIÓN IP DEL EQUIPO");
             Logger.getLogger(Peticion.class.getName()).log(Level.SEVERE, UE.getMessage(), UE);
         }
-  
+
         this.metodo = "actualizarLista";
         this.jugadores = jugadores;
         this.puertoImadiato = puertoImediato;
-        
+
     }
-public List<Jugador> getJugadores(){
- return  jugadores;
-}
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
     /**
      * Obtiene nombre del método que desea ser llamado
      *
@@ -174,4 +179,9 @@ public List<Jugador> getJugadores(){
     public String getNombreAvatar() {
         return nombreAvatar;
     }
+
+    public List<Carta> getCastasDesecho() {
+        return castasDesecho;
+    }
+    
 }
