@@ -23,8 +23,9 @@ public class Jugador {
     @SerializedName("host:")
     private boolean host;
     private boolean listo;
-    public ArrayList<Cartas>cartasActuales=new ArrayList<>();
-    public  ArrayList<Cartas>cartasJugadas=new ArrayList<>();
+    private final ArrayList<Carta> cartasLogicasActuales = new ArrayList<>();
+    private final ArrayList<Carta> cartasLogicasJugadas = new ArrayList<>();
+
     public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
         this.nombreAvatar = nombreAvatar;
@@ -81,18 +82,22 @@ public class Jugador {
     public void setHost(boolean host) {
         this.host = host;
     }
-    public void misCartas(Cartas cartas){
-      cartasActuales.add(cartas);
-    }    
-    public ArrayList<Cartas> verLista(){
 
-      return cartasActuales;
+    public void misCartas(Carta cartas) {
+        cartasLogicasActuales.add(cartas);
     }
-    public  void CartasTablero(Cartas cartas ){
-     cartasJugadas.add(cartas);
-    }
-     public ArrayList<Cartas> verCartasTablero(){
 
-      return cartasJugadas;
+    public ArrayList<Carta> verLista() {
+
+        return cartasLogicasActuales;
+    }
+
+    public void CartasTablero(Carta cartas) {
+        cartasLogicasJugadas.add(cartas);
+    }
+
+    public ArrayList<Carta> verCartasTablero() {
+
+        return cartasLogicasJugadas;
     }
 }

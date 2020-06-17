@@ -31,19 +31,23 @@ public class Actualizacion {
         action = "nuevosJugadores";
         listaJugadores = json;
     }
-    public  void actualizarDatosNuevos(String json) {
+
+    public void actualizarDatosNuevos(String json) {
         this.modulo = "SalaDeJuego";
-        action = "actualizarListasDeJuego";
-        listaJugadores = json;}
-    /**)
+        action = "cargarDatosInicioJuego";
+        listaJugadores = json;
+    }
+
     /**
-     *Prepara actalización que vuelve host al jugador que la reciba.
+     * )
+     * /**
+     * Prepara actalización que vuelve host al jugador que la reciba.
      */
-    public void volverHost(){
+    public void volverHost() {
         action = "volverHost";
     }
-    
-    public void vistaJuego(){
+
+    public void vistaJuego() {
         action = "modoJuego";
     }
 }

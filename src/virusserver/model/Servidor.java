@@ -15,23 +15,23 @@ import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import virusserver.util.Actualizador;
-import virusserver.util.ActualizarCartas;
+import virusserver.util.ManejadorCartas;
 import virusserver.util.Respondedor;
 import virusserver.util.Respuesta;
 
 /**
  *
- * @author Roberth :)
+ * @author No tiene,esto está más manoseado que botón de semáforo XD
  */
-public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha de los jugadores para enviarles actualizaciones.
+public class Servidor {
 
-    private final Queue<Peticion> peticiones;          //Cola de peticiones por atender en caso de que halla saturación.
-    private Escuchador bahiaDeConexion;                //Espera a los jugadores que se quieran unir y los conecta de ser posible.
-    private final List<Jugador> jugadoresConectados;   // Máximo soportará 6 jugadores
-    private int etapaJuego;                            // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
-    private Thread hiloRespondedor;                    //Es el que se encarga de enviar las respuestas.
-    private int votosDeInicio;                         // Votos de inicio de partida que se han recibido.
-    ActualizarCartas actualizarListasCartas = new ActualizarCartas();
+    private final Queue<Peticion> peticiones;                       //Cola de peticiones por atender en caso de que halla saturación.
+    private Escuchador bahiaDeConexion;                             //Espera a los jugadores que se quieran unir y los conecta de ser posible.
+    private final List<Jugador> jugadoresConectados;                // Máximo soportará 6 jugadores
+    private int etapaJuego;                                         // 0 si no hay partida organizada, 1 si está en espera, 2 si ya comenzó.
+    private Thread hiloRespondedor;                                 //Es el que se encarga de enviar las respuestas.
+    private int votosDeInicio;                                      // Votos de inicio de partida que se han recibido.
+    private final ManejadorCartas manejadorCartas = new ManejadorCartas();
 
     public Servidor() {
         peticiones = new LinkedList<>();
@@ -123,7 +123,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
                     if (jugadorCliente.verLista().size() != jugadorServ.verLista().size()) {
                         jugadorServ.verLista().clear();
                         jugadorCliente.verLista().forEach(misCartasCliente -> {
-                  //          System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
+                            //          System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
                             jugadorServ.misCartas(misCartasCliente);
                         });
                     }
@@ -138,7 +138,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         });
 
         Actualizador act = new Actualizador();
-        act.actualizarDatos(jugadoresConectados);
+        act.cargarDatosInicio(jugadoresConectados);
     }
 
     public void nuevoJugadorListo(Peticion pet) {
@@ -159,7 +159,6 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
                 break;
             }
         }
-
         if (!jugador.isHost()) {                       //No va a llegar nulo, esta cosa está loca, no le hagan mente :v
             if (etapaJuego == 1) {
                 jugadoresConectados.remove(jugador);
@@ -201,12 +200,6 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         new Respondedor().responder(resp, pet);
     }
 
-    public void solicitarCarta(Peticion pet) {
-
-        new Respondedor().ResponderConCarta(actualizarListasCartas.SolicitarUnaCarta(), pet);
-        actualizarListasCartas.ElimarCarta();
-    }
-
     public void forzarInicio(Peticion pet) {
         Actualizador act = new Actualizador();
         act.cambiarAVistaJuego(jugadoresConectados);
@@ -215,20 +208,16 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         } catch (InterruptedException ex) {
             System.err.print("ALGO RARO PASÓ AL QUERER PAUSAR EL SERVIDOR :V");
         }
-        // ActualizarCartas cartas = new ActualizarCartas();
-        actualizarListasCartas.ListaCartas();
-        actualizarListasCartas.CargarCartasJugador(jugadoresConectados);
+        etapaJuego = 2;
+        manejadorCartas.ListarCartas();
+        manejadorCartas.CargarCartasJugador(jugadoresConectados);
         act = new Actualizador();
-        act.actualizarDatos(jugadoresConectados);
-        jugadoresConectados.forEach(Juga -> {
-            Juga.verLista().forEach(carta -> {
-        //        System.out.print(carta.getNombreCarta() + carta.getNumeroCarta() + carta.getTipo());
-            });
-        });
+        act.cargarDatosInicio(jugadoresConectados);
+        System.out.println("SERVIDOR HA ORDENADO ENTRAR A MODO JUEGO");
+    }
 
-        //cartas.distribuirCartas(jugadoresConectados);
-        //cartas.distribuirCartas(jugadoresConectados);
-        System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
+    public void solicitarCarta(Peticion pet) {
+        new Respondedor().ResponderConCarta(manejadorCartas.SolicitarUnaCarta(), pet);
     }
 
     private Method getSeverMethod(String nombre) {

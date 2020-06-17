@@ -30,15 +30,13 @@ public class Actualizador {
      * @param jugList Lista de jugadores
      */
     public void actualizarSalasDeEspera(List<Jugador> jugList) {
-        
-     
 
         Type typeListJug = new TypeToken<List<Jugador>>() {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);
         Actualizacion act = new Actualizacion();
         act.actualizarListaJugadores(jsonList);
-        for(Jugador actual : jugList){
+        for (Jugador actual : jugList) {
             Thread enviador = new Thread(() -> {
                 try {
                     Socket sock = new Socket(actual.getIP(), actual.getPuerto());
@@ -57,14 +55,15 @@ public class Actualizador {
             enviador.start();
         }
     }
-      public void actualizarDatos(List<Jugador> jugList) {
+
+    public void cargarDatosInicio(List<Jugador> jugList) {
         
         Type typeListJug = new TypeToken<List<Jugador>>() {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);
         Actualizacion act = new Actualizacion();
         act.actualizarDatosNuevos(jsonList);
-        for(Jugador actual : jugList){
+        for (Jugador actual : jugList) {
             Thread enviador = new Thread(() -> {
                 try {
                     Socket sock = new Socket(actual.getIP(), actual.getPuerto());
@@ -99,11 +98,11 @@ public class Actualizador {
             Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
         }
     }
-    
-    public void cambiarAVistaJuego(List<Jugador> jugList){/////LALO ES AQUIIIIIII
+
+    public void cambiarAVistaJuego(List<Jugador> jugList) {
         Actualizacion act = new Actualizacion();
         act.vistaJuego();
-         for(Jugador actual : jugList){
+        for (Jugador actual : jugList) {
             Thread enviador = new Thread(() -> {
                 try {
                     Socket sock = new Socket(actual.getIP(), actual.getPuerto());
