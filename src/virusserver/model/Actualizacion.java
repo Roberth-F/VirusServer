@@ -44,8 +44,7 @@ public class Actualizacion {
         action = "actualizarListaMensaje";
         listaMensajes = json;}
     /**
-     * )
-     * /**
+     *
      * Prepara actalización que vuelve host al jugador que la reciba.
      */
     public void volverHost() {
@@ -54,5 +53,10 @@ public class Actualizacion {
 
     public void vistaJuego() {
         action = "modoJuego";
+    }
+
+    public void turnoParaJugador() {
+        action = "turnoDeJugar";
+        modulo = "SalaDeJuego";
     }
 }

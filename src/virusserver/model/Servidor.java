@@ -25,6 +25,7 @@ import virusserver.util.Respuesta;
  */
 public class Servidor {
 
+    private int turnoActual;
     private final Queue<Peticion> peticiones;                       //Cola de peticiones por atender en caso de que halla saturación.
     private Escuchador bahiaDeConexion;                             //Espera a los jugadores que se quieran unir y los conecta de ser posible.
     private final List<Jugador> jugadoresConectados;                // Máximo soportará 6 jugadores
@@ -44,6 +45,7 @@ public class Servidor {
      * Inicia el funcionamiento del servidor.
      */
     public void start() {
+        turnoActual = -1;
         etapaJuego = 0;
         bahiaDeConexion = new Escuchador(7777);
         System.out.println("Servidor: --> Corriendo\n");
@@ -126,7 +128,6 @@ public class Servidor {
                     if (jugadorCliente.verLista().size() != jugadorServ.verLista().size()) {
                         jugadorServ.verLista().clear();
                         jugadorCliente.verLista().forEach(misCartasCliente -> {
-                            //          System.out.println("Nombre:" + jugadorCliente.getNombre() + "Carta:" + misCartasCliente.getNombreCarta());
                             jugadorServ.misCartas(misCartasCliente);
                         });
                     }
@@ -217,23 +218,30 @@ public class Servidor {
         act.cambiarAVistaJuego(jugadoresConectados);
         try {
             Thread.sleep(2000);
+
+            etapaJuego = 2;
+            manejadorCartas.ListarCartas();
+            manejadorCartas.CargarCartasJugador(jugadoresConectados);
+            act = new Actualizador();
+            act.cargarDatosInicio(jugadoresConectados);
+            Thread.sleep(500);
+            pasarTurno(pet);
         } catch (InterruptedException ex) {
             System.err.print("ALGO RARO PASÓ AL QUERER PAUSAR EL SERVIDOR :V");
         }
-        etapaJuego = 2;
-        manejadorCartas.ListarCartas();
-        manejadorCartas.CargarCartasJugador(jugadoresConectados);
-        act = new Actualizador();
-        act.cargarDatosInicio(jugadoresConectados);
-        System.out.println("SERVIDOR HA ORDENADO ENTRAR A MODO JUEGO");
     }
 
     public void solicitarCarta(Peticion pet) {
         new Respondedor().ResponderConCarta(manejadorCartas.SolicitarUnaCarta(), pet);
     }
-    
-    public void desecharCartas(Peticion pet){
-        manejadorCartas.desecharCarta(pet.getCastasDesecho()); 
+
+    public void desecharCartas(Peticion pet) {
+        manejadorCartas.desecharCarta(pet.getCastasDesecho());
+    }
+
+    public void pasarTurno(Peticion pet) {
+        turnoActual = (turnoActual == jugadoresConectados.size() - 1) ? 0 : turnoActual + 1;
+        new Actualizador().cederTurnoA(jugadoresConectados.get(turnoActual));
     }
     public void forzarChat(Peticion pet) {
     System.out.print("HOLA SOY TU PADRE:"+pet.getMetodo());

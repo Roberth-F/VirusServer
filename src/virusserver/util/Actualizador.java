@@ -58,7 +58,7 @@ public class Actualizador {
     }
 
     public void cargarDatosInicio(List<Jugador> jugList) {
-        
+
         Type typeListJug = new TypeToken<List<Jugador>>() {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);
@@ -147,6 +147,24 @@ public class Actualizador {
                 }
             });
             enviador.start();
+        }
+    }
+
+    public void cederTurnoA(Jugador jugador) {
+        Actualizacion act = new Actualizacion();
+        act.turnoParaJugador();
+        try {
+            Socket sock = new Socket(jugador.getIP(), jugador.getPuerto());
+            DataOutputStream datos = new DataOutputStream(sock.getOutputStream());
+            String json = new Gson().toJson(act);
+            datos.writeUTF(json);
+            sock.getOutputStream().close();
+            datos.close();
+            sock.close();
+        } catch (UnknownHostException UHE) {
+            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
+        } catch (IOException IO) {
+            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
         }
     }
 }
