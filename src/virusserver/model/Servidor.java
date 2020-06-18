@@ -120,26 +120,8 @@ public class Servidor {
         }
     }
 
-    public void actualizarLista(Peticion pet) {
-        Respuesta res = new Respuesta(true, "");
-        jugadoresConectados.forEach(jugadorServ -> {
-            pet.getJugadores().forEach(jugadorCliente -> {
-                if (jugadorServ.getNombre().equals(jugadorCliente.getNombre())) {
-                    if (jugadorCliente.verLista().size() != jugadorServ.verLista().size()) {
-                        jugadorServ.verLista().clear();
-                        jugadorCliente.verLista().forEach(misCartasCliente -> {
-                            jugadorServ.misCartas(misCartasCliente);
-                        });
-                    }
-                    if (jugadorCliente.verCartasTablero().size() != jugadorServ.verCartasTablero().size()) {
-                        jugadorServ.verCartasTablero().clear();
-                        jugadorCliente.verCartasTablero().forEach(misCartasTablero -> {
-                            jugadorServ.CartasTablero(misCartasTablero);
-                        });
-                    }
-                }
-            });
-        });
+    public void actualizarContrincantes(Peticion pet) {
+        
 
         Actualizador act = new Actualizador();
         act.cargarDatosInicio(jugadoresConectados);
