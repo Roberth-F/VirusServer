@@ -104,6 +104,8 @@ public class ManejadorCartas {
             masoCartas.add(carta);
         }
         Collections.shuffle(masoCartas);
+        Collections.shuffle(masoCartas);
+        Collections.shuffle(masoCartas);
     }
 
     public Carta SolicitarUnaCarta() {
@@ -116,8 +118,7 @@ public class ManejadorCartas {
     public void CargarCartasJugador(List<Jugador> listaJu) {
         for (int x = 0; x < 3; x++) {
             listaJu.forEach(jugador -> {
-                jugador.misCartas(masoCartas.get(0));
-                masoCartas.remove(0);
+                jugador.getCartasLogicasActuales().add(masoCartas.remove(0));     //Remove retorna el objeto que se elimino
             });
         }
     }

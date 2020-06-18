@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import virusserver.util.Escuchador;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -107,6 +108,8 @@ public class Servidor {
             resp = new Respuesta(false, "Ya el juego comenzó, te podrás unir en la próxima ronda");
         } else if (jugadoresConectados.size() >= 6) {
             resp = new Respuesta(false, "Ya esta partida está llena");
+        } else if (jugadoresConectados.stream().anyMatch(jug -> jug.getNombre().equals(pet.getNombreJugador()))) {
+            resp = new Respuesta(false, "Este nombre ya está en uso.");
         } else {
             resp = new Respuesta(true, "");
             jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp(), false));
@@ -118,10 +121,13 @@ public class Servidor {
     }
 
     public void actualizarContrincantes(Peticion pet) {
-        
-
+        jugadoresConectados.forEach((jugador) -> {
+            pet.getJugadores().forEach(jug -> {
+                jugador.copyCarts(jug);
+            });
+        });
         Actualizador act = new Actualizador();
-        act.cargarDatosInicio(jugadoresConectados);
+        act.refrescarSalasDeJuego(jugadoresConectados, pet.getNombreJugador());
     }
 
     public void nuevoJugadorListo(Peticion pet) {
