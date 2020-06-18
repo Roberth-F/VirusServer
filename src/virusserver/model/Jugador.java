@@ -97,7 +97,10 @@ public class Jugador {
     }
 
     public ArrayList<Carta> verCartasTablero() {
-
         return cartasLogicasJugadas;
+    }
+    
+    public void CopyCarts(Jugador jug) {
+        //TODO------------------------------------------------------------------
     }
 }
