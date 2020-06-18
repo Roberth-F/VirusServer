@@ -63,8 +63,34 @@ public class Actualizador {
         }.getType();
         String jsonList = new Gson().toJson(jugList, typeListJug);
         Actualizacion act = new Actualizacion();
-        act.actualizarDatosNuevos(jsonList);
+        act.cargarDatosNuevos(jsonList);
         for (Jugador actual : jugList) {
+            Thread enviador = new Thread(() -> {
+                try {
+                    Socket sock = new Socket(actual.getIP(), actual.getPuerto());
+                    DataOutputStream datos = new DataOutputStream(sock.getOutputStream());
+                    String json = new Gson().toJson(act);
+                    datos.writeUTF(json);
+                    sock.getOutputStream().close();
+                    datos.close();
+                    sock.close();
+                } catch (UnknownHostException UHE) {
+                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
+                } catch (IOException IO) {
+                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
+                }
+            });
+            enviador.start();
+        }
+    }
+
+    public void refrescarSalasDeJuego(List<Jugador> jugList, String emisorDePeticion) {
+        Actualizacion act = new Actualizacion();
+        act.toRefreshGame(jugList);
+        for (Jugador actual : jugList) {
+            if (actual.getNombre().equals(emisorDePeticion)) {
+                continue;                                                        //Salta interacion actual
+            }
             Thread enviador = new Thread(() -> {
                 try {
                     Socket sock = new Socket(actual.getIP(), actual.getPuerto());
@@ -120,10 +146,14 @@ public class Actualizador {
             sock.getOutputStream().close();
             datos.close();
             sock.close();
+
         } catch (UnknownHostException UHE) {
-            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
+            Logger.getLogger(Respondedor.class
+                    .getName()).log(Level.SEVERE, null, UHE);
+
         } catch (IOException IO) {
-            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
+            Logger.getLogger(Respondedor.class
+                    .getName()).log(Level.SEVERE, null, IO);
         }
     }
 
@@ -140,10 +170,14 @@ public class Actualizador {
                     sock.getOutputStream().close();
                     datos.close();
                     sock.close();
+
                 } catch (UnknownHostException UHE) {
-                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
+                    Logger.getLogger(Respondedor.class
+                            .getName()).log(Level.SEVERE, null, UHE);
+
                 } catch (IOException IO) {
-                    Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
+                    Logger.getLogger(Respondedor.class
+                            .getName()).log(Level.SEVERE, null, IO);
                 }
             });
             enviador.start();
@@ -161,10 +195,14 @@ public class Actualizador {
             sock.getOutputStream().close();
             datos.close();
             sock.close();
+
         } catch (UnknownHostException UHE) {
-            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
+            Logger.getLogger(Respondedor.class
+                    .getName()).log(Level.SEVERE, null, UHE);
+
         } catch (IOException IO) {
-            Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
+            Logger.getLogger(Respondedor.class
+                    .getName()).log(Level.SEVERE, null, IO);
         }
     }
 }

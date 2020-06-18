@@ -7,6 +7,7 @@ package virusserver.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 /**
  *
@@ -82,25 +83,22 @@ public class Jugador {
     public void setHost(boolean host) {
         this.host = host;
     }
+    private static final Logger LOG = Logger.getLogger(Jugador.class.getName());
 
-    public void misCartas(Carta cartas) {
-        cartasLogicasActuales.add(cartas);
-    }
-
-    public ArrayList<Carta> verLista() {
-
+    public ArrayList<Carta> getCartasLogicasActuales() {
         return cartasLogicasActuales;
     }
 
-    public void CartasTablero(Carta cartas) {
-        cartasLogicasJugadas.add(cartas);
-    }
-
-    public ArrayList<Carta> verCartasTablero() {
+    public ArrayList<Carta> getCartasLogicasJugadas() {
         return cartasLogicasJugadas;
     }
-    
-    public void CopyCarts(Jugador jug) {
-        //TODO------------------------------------------------------------------
+
+    public void copyCarts(Jugador jug) {
+        if(jug.getNombre().equals(this.getNombre())){
+            this.cartasLogicasActuales.clear();
+            this.cartasLogicasJugadas.clear();
+            this.cartasLogicasActuales.addAll(jug.getCartasLogicasActuales());
+            this.cartasLogicasJugadas.addAll(jug.getCartasLogicasJugadas());
+        }
     }
 }
