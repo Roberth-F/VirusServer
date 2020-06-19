@@ -6,6 +6,7 @@
 package virusserver.model;
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 /**
  * Una instancia de esta clase permite crear y enviar una actualizació al los
@@ -21,6 +22,9 @@ public class Actualizacion {
     private String modulo;
     @SerializedName("nuevosJugadores")
     private String listaJugadores;
+    @SerializedName("refresher")
+    private List<Jugador> refresherList;
+
     @SerializedName("nuevosMensajes")
     private String listaMensajes;
     /**
@@ -32,24 +36,46 @@ public class Actualizacion {
         action = "nuevosJugadores";
         listaJugadores = json;
     }
-   
-    public  void actualizarDatosNuevos(String json) {
+
+    public void cargarDatosNuevos(String json) {
         this.modulo = "SalaDeJuego";
-        action = "actualizarListasDeJuego";
-        listaJugadores = json;}
+        action = "cargarDatosInicioJuego";
+        listaJugadores = json;
+    }
+
+    public void toRefreshGame(List<Jugador> jugList) {
+        this.modulo = "SalaDeJuego";
+        this.action = "refrescarDatosDeJuego";
+        this.refresherList = jugList;
+    }
+
      public  void actualizarDatosCHAT(String json) {
         this.modulo = "SalaChat";
         action = "actualizarListaMensaje";
         listaMensajes = json;}
-    /**)
     /**
-     *Prepara actalización que vuelve host al jugador que la reciba.
+     *
+     * Prepara actalización que vuelve host al jugador que la reciba.
      */
-    public void volverHost(){
+    public void volverHost() {
         action = "volverHost";
     }
-    
-    public void vistaJuego(){
+
+    public void vistaJuego() {
         action = "modoJuego";
     }
+
+    public void turnoParaJugador() {
+        action = "turnoDeJugar";
+        modulo = "SalaDeJuego";
+    }
+
+    public List<Jugador> getRefresherList() {
+        return refresherList;
+    }
+
+    public void setRefresherList(List<Jugador> refresherList) {
+        this.refresherList = refresherList;
+    }
+
 }

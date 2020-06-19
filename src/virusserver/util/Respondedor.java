@@ -12,7 +12,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import virusserver.model.Cartas;
+import virusserver.model.Carta;
 import virusserver.model.Peticion;
 
 /**
@@ -44,7 +44,8 @@ public class Respondedor {
             Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, IO);
         }
     }
-        public void ResponderConCarta(Cartas respuesta, Peticion pet) {
+
+    public void ResponderConCarta(Carta respuesta, Peticion pet) {
         try {
             Socket sock = new Socket(pet.getIp(), pet.getPuertoImadiato());
             DataOutputStream datos = new DataOutputStream(sock.getOutputStream());
@@ -53,7 +54,6 @@ public class Respondedor {
             sock.getOutputStream().close();
             datos.close();
             sock.close();
-       //     System.out.println("Envida respuesta con estado " + respuesta.getNombreCarta() + "\n");
         } catch (UnknownHostException UHE) {
             Logger.getLogger(Respondedor.class.getName()).log(Level.SEVERE, null, UHE);
         } catch (IOException IO) {

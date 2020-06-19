@@ -7,6 +7,8 @@ package virusserver.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,8 +25,9 @@ public class Jugador {
     @SerializedName("host:")
     private boolean host;
     private boolean listo;
-    public ArrayList<Cartas>cartasActuales=new ArrayList<>();
-    public  ArrayList<Cartas>cartasJugadas=new ArrayList<>();
+    private final ArrayList<Carta> cartasLogicasActuales = new ArrayList();
+    private final ArrayList<List<Carta>> cartasLogicasJugadas = new ArrayList();
+
     public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
         this.nombreAvatar = nombreAvatar;
@@ -81,18 +84,26 @@ public class Jugador {
     public void setHost(boolean host) {
         this.host = host;
     }
-    public void misCartas(Cartas cartas){
-      cartasActuales.add(cartas);
-    }    
-    public ArrayList<Cartas> verLista(){
+    private static final Logger LOG = Logger.getLogger(Jugador.class.getName());
 
-      return cartasActuales;
+    public ArrayList<Carta> getCartasLogicasActuales() {
+        return cartasLogicasActuales;
     }
-    public  void CartasTablero(Cartas cartas ){
-     cartasJugadas.add(cartas);
-    }
-     public ArrayList<Cartas> verCartasTablero(){
 
-      return cartasJugadas;
+    public ArrayList<List<Carta>> getCartasLogicasJugadas() {
+        return cartasLogicasJugadas;
+    }
+
+    public void copyCarts(Jugador jug) {
+        if (jug.getNombre().equals(this.getNombre())) {
+            this.cartasLogicasActuales.clear();
+            this.cartasLogicasJugadas.clear();
+            this.cartasLogicasActuales.addAll(jug.getCartasLogicasActuales());
+            this.cartasLogicasJugadas.addAll(jug.getCartasLogicasJugadas());
+        }
+    }
+
+    public void fixEmptyLists() {
+        cartasLogicasJugadas.removeIf(internalList -> internalList.isEmpty());
     }
 }
