@@ -104,14 +104,13 @@ public class ManejadorCartas {
             masoCartas.add(carta);
         }
         Collections.shuffle(masoCartas);
-        Collections.shuffle(masoCartas);
-        Collections.shuffle(masoCartas);
     }
 
     public Carta SolicitarUnaCarta() {
         if (masoCartas.isEmpty()) {
             moverDesechoAMaso();
         }
+        Collections.shuffle(masoCartas);
         return masoCartas.remove(0);                //Remove retorna el objeto que se elimino
     }
 
@@ -130,6 +129,7 @@ public class ManejadorCartas {
 
     public void moverDesechoAMaso() {
         masoCartas.addAll(desecho);
+        System.out.println("Mazo vacio " + desecho.size()+ " cartas movidas del desecho al mazo");
         desecho.clear();
         masoCartas.forEach(carta -> carta.setCantidad(0));
     }
