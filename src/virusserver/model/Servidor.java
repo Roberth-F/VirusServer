@@ -32,8 +32,10 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
     private Thread hiloRespondedor;                    //Es el que se encarga de enviar las respuestas.
     private int votosDeInicio;                         // Votos de inicio de partida que se han recibido.
     ActualizarCartas actualizarListasCartas = new ActualizarCartas();
-
+    private  List<ChatGlobal>chatGlobal=new ArrayList<ChatGlobal>();
+    
     public Servidor() {
+       
         peticiones = new LinkedList<>();
         jugadoresConectados = new ArrayList();
     }
@@ -49,7 +51,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         hiloRespondedor.start();                                                //Arranca ejecución de segundo hilo.
         while (true) {
             Peticion pet = bahiaDeConexion.escuchar();
-            System.out.print("Entre al while");
+          
             synchronized (this.peticiones) {
                 this.peticiones.add(pet);
             }
@@ -65,7 +67,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
             }
             if (!vacia) {
                 Peticion pet = peticiones.poll();
-                System.out.println("Mostrar Petecion" + pet.getMetodo());
+                System.out.println("Mostrar Peticion" + pet.getMetodo());
 
                 Method metodo = getSeverMethod(pet.getMetodo());
                 //System.out.println("La peticion es"+pet.getMetodo()+""+pet.getJugadores());
@@ -108,6 +110,7 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         } else {
             resp = new Respuesta(true, "");
             jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp(), false));
+           
         }
         new Respondedor().responder(resp, pet);
         if (resp.getEstado()) {
@@ -140,7 +143,16 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         Actualizador act = new Actualizador();
         act.actualizarDatos(jugadoresConectados);
     }
-
+   public void actualizarMensaje(Peticion pet){
+    chatGlobal.clear();
+    pet.getChat().forEach(datos->{   
+    chatGlobal.add(new ChatGlobal(datos.emisor,datos.mensaje));
+    
+    });
+        Actualizador act = new Actualizador();
+        chatGlobal.size();
+       act.actualizarCHAT(jugadoresConectados, chatGlobal);
+   }
     public void nuevoJugadorListo(Peticion pet) {
         jugadoresConectados.forEach(act -> {
             if (act.getNombre().equals(pet.getNombreJugador()) && !act.isListo()) {
@@ -229,6 +241,11 @@ public class Servidor {        //TOOD  --> Falta guardar IP y puerto de escucha 
         //cartas.distribuirCartas(jugadoresConectados);
         //cartas.distribuirCartas(jugadoresConectados);
         System.out.println("SERVIDOR ESTÁ INTENTANDO ENTRAR A MODO JUEGO");
+    }
+    public void forzarChat(Peticion pet) {
+    System.out.print("HOLA SOY TU PADRE:"+pet.getMetodo());
+        Actualizador act= new Actualizador();
+        act.actualizarCHAT(jugadoresConectados,chatGlobal);
     }
 
     private Method getSeverMethod(String nombre) {

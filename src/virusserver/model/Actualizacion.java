@@ -21,7 +21,8 @@ public class Actualizacion {
     private String modulo;
     @SerializedName("nuevosJugadores")
     private String listaJugadores;
-
+    @SerializedName("nuevosMensajes")
+    private String listaMensajes;
     /**
      * Prepara una actualización de lista de jugadores.
      *
@@ -31,10 +32,15 @@ public class Actualizacion {
         action = "nuevosJugadores";
         listaJugadores = json;
     }
+   
     public  void actualizarDatosNuevos(String json) {
         this.modulo = "SalaDeJuego";
         action = "actualizarListasDeJuego";
         listaJugadores = json;}
+     public  void actualizarDatosCHAT(String json) {
+        this.modulo = "SalaChat";
+        action = "actualizarListaMensaje";
+        listaMensajes = json;}
     /**)
     /**
      *Prepara actalización que vuelve host al jugador que la reciba.

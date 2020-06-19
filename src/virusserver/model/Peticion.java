@@ -37,7 +37,8 @@ public class Peticion {
     private String nombreAvatar;
     @SerializedName("jugadores")
     private List<Jugador> jugadores;
-
+    @SerializedName("chat")
+    private List<ChatGlobal> chat;
     public Peticion() {
     }
 
@@ -82,9 +83,26 @@ public class Peticion {
         this.puertoImadiato = puertoImediato;
         
     }
+        public void actualizarMensaje(List<ChatGlobal>chat, int puertoImediato) {
+        try {
+            this.ip = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException UE) {
+            System.err.println("ERROR OBTENIENDO DIRECCIÓN IP DEL EQUIPO");
+            Logger.getLogger(Peticion.class.getName()).log(Level.SEVERE, UE.getMessage(), UE);
+        }
+  
+        this.metodo = "actualizarMensaje";
+        this.chat = this.chat;
+        this.puertoImadiato = puertoImediato;
+        
+    }
 public List<Jugador> getJugadores(){
  return  jugadores;
 }
+
+    public List<ChatGlobal> getChat() {
+        return chat;
+    }
     /**
      * Obtiene nombre del método que desea ser llamado
      *
