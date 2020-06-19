@@ -64,7 +64,7 @@ public class ManejadorCartas {
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Amarilla");
+            carta = new Carta("Medicina", "Amarillo");
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
