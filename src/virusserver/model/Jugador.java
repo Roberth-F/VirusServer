@@ -7,6 +7,7 @@ package virusserver.model;
 
 import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 /**
@@ -24,8 +25,8 @@ public class Jugador {
     @SerializedName("host:")
     private boolean host;
     private boolean listo;
-    private final ArrayList<Carta> cartasLogicasActuales = new ArrayList<>();
-    private final ArrayList<Carta> cartasLogicasJugadas = new ArrayList<>();
+    private final ArrayList<Carta> cartasLogicasActuales = new ArrayList();
+    private final ArrayList<List<Carta>> cartasLogicasJugadas = new ArrayList();
 
     public Jugador(String nombreJugador, String nombreAvatar, int puerto, String direccionIP, boolean host) {
         this.nombreJugador = nombreJugador;
@@ -89,7 +90,7 @@ public class Jugador {
         return cartasLogicasActuales;
     }
 
-    public ArrayList<Carta> getCartasLogicasJugadas() {
+    public ArrayList<List<Carta>> getCartasLogicasJugadas() {
         return cartasLogicasJugadas;
     }
 
