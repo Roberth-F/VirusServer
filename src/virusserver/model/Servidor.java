@@ -122,6 +122,7 @@ public class Servidor {
             });
         });
         Actualizador act = new Actualizador();
+        jugadoresConectados.forEach(jugador -> jugador.fixEmptyLists());
         act.refrescarSalasDeJuego(jugadoresConectados, pet.getNombreJugador());
     }
 
@@ -189,7 +190,6 @@ public class Servidor {
         act.cambiarAVistaJuego(jugadoresConectados);
         try {
             Thread.sleep(2000);
-
             etapaJuego = 2;
             manejadorCartas.ListarCartas();
             manejadorCartas.CargarCartasJugador(jugadoresConectados);

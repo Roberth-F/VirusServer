@@ -95,11 +95,15 @@ public class Jugador {
     }
 
     public void copyCarts(Jugador jug) {
-        if(jug.getNombre().equals(this.getNombre())){
+        if (jug.getNombre().equals(this.getNombre())) {
             this.cartasLogicasActuales.clear();
             this.cartasLogicasJugadas.clear();
             this.cartasLogicasActuales.addAll(jug.getCartasLogicasActuales());
             this.cartasLogicasJugadas.addAll(jug.getCartasLogicasJugadas());
         }
+    }
+
+    public void fixEmptyLists() {
+        cartasLogicasJugadas.removeIf(internalList -> internalList.isEmpty());
     }
 }
