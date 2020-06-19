@@ -53,7 +53,6 @@ public class Servidor {
         hiloRespondedor.start();                                                //Arranca ejecución de segundo hilo.
         while (true) {
             Peticion pet = bahiaDeConexion.escuchar();
-          
             synchronized (this.peticiones) {
                 this.peticiones.add(pet);
             }
@@ -69,10 +68,7 @@ public class Servidor {
             }
             if (!vacia) {
                 Peticion pet = peticiones.poll();
-                System.out.println("Mostrar Peticion" + pet.getMetodo());
-
                 Method metodo = getSeverMethod(pet.getMetodo());
-                //System.out.println("La peticion es"+pet.getMetodo()+""+pet.getJugadores());
                 try {
                     metodo.invoke(this, pet);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
