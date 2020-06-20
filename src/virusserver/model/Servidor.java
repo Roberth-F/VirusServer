@@ -33,10 +33,11 @@ public class Servidor {
     private Thread hiloRespondedor;                                 //Es el que se encarga de enviar las respuestas.
     private int votosDeInicio;                                      // Votos de inicio de partida que se han recibido.
     private final ManejadorCartas manejadorCartas = new ManejadorCartas();
+    private boolean hayGanador;
+    private List<ChatGlobal> chatGlobal = new ArrayList<ChatGlobal>();
 
-    private  List<ChatGlobal>chatGlobal=new ArrayList<ChatGlobal>();
     public Servidor() {
-       
+
         peticiones = new LinkedList<>();
         jugadoresConectados = new ArrayList();
     }
@@ -110,7 +111,7 @@ public class Servidor {
         } else {
             resp = new Respuesta(true, "");
             jugadoresConectados.add(new Jugador(pet.getNombreJugador(), pet.getNombreAvatar(), pet.getPuerto(), pet.getIp(), false));
-           
+
         }
         new Respondedor().responder(resp, pet);
         if (resp.getEstado()) {
@@ -124,20 +125,25 @@ public class Servidor {
                 jugador.copyCarts(jug);
             });
         });
-        Actualizador act = new Actualizador();
-        jugadoresConectados.forEach(jugador -> jugador.fixEmptyLists());
-        act.refrescarSalasDeJuego(jugadoresConectados, pet.getNombreJugador());
+        buscarGanador();
+        if (!hayGanador) {
+            Actualizador act = new Actualizador();
+            jugadoresConectados.forEach(jugador -> jugador.fixEmptyLists());
+            act.refrescarSalasDeJuego(jugadoresConectados, pet.getNombreJugador());
+        }
     }
-   public void actualizarMensaje(Peticion pet){
-    chatGlobal.clear();
-    pet.getChat().forEach(datos->{   
-    chatGlobal.add(new ChatGlobal(datos.emisor,datos.mensaje));
-    
-    });
+
+    public void actualizarMensaje(Peticion pet) {
+        chatGlobal.clear();
+        pet.getChat().forEach(datos -> {
+            chatGlobal.add(new ChatGlobal(datos.emisor, datos.mensaje));
+
+        });
         Actualizador act = new Actualizador();
         chatGlobal.size();
-       act.actualizarCHAT(jugadoresConectados, chatGlobal);
-   }
+        act.actualizarCHAT(jugadoresConectados, chatGlobal);
+    }
+
     public void nuevoJugadorListo(Peticion pet) {
         jugadoresConectados.forEach(act -> {
             if (act.getNombre().equals(pet.getNombreJugador()) && !act.isListo()) {
@@ -198,6 +204,7 @@ public class Servidor {
     }
 
     public void forzarInicio(Peticion pet) {
+        hayGanador = false;
         Actualizador act = new Actualizador();
         act.cambiarAVistaJuego(jugadoresConectados);
         try {
@@ -226,10 +233,30 @@ public class Servidor {
         turnoActual = (turnoActual == jugadoresConectados.size() - 1) ? 0 : turnoActual + 1;
         new Actualizador().cederTurnoA(jugadoresConectados.get(turnoActual));
     }
+
+    public void buscarGanador() {
+        jugadoresConectados.forEach((jugador) -> {
+            int organosSanos = 0;
+            for (List<Carta> puño : jugador.getCartasLogicasJugadas()) {
+                long numeroVirus = puño.stream().filter(carta -> "Virus".equals(carta.getTipo())).count();
+                if (numeroVirus == 0) {
+                    organosSanos++;
+                }
+            }
+            if (organosSanos > 3) {
+                declararUnGanador(jugador);
+            }
+        });
+    }
+
+    public void declararUnGanador(Jugador ganador) {
+        new Actualizador().enviarMensajeDeGanador(ganador, jugadoresConectados);
+    }
+
     public void forzarChat(Peticion pet) {
-    System.out.print("HOLA SOY TU PADRE:"+pet.getMetodo());
-        Actualizador act= new Actualizador();
-        act.actualizarCHAT(jugadoresConectados,chatGlobal);
+        System.out.print("HOLA SOY TU PADRE:" + pet.getMetodo());
+        Actualizador act = new Actualizador();
+        act.actualizarCHAT(jugadoresConectados, chatGlobal);
     }
 
     private Method getSeverMethod(String nombre) {

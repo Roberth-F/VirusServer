@@ -24,83 +24,83 @@ public class ManejadorCartas {
 
         Carta carta;
         for (int x = 0; x < 5; x++) {
-            carta = new Carta("Cerebro", "Azul");
+            carta = new Carta("Cerebro", "Azul", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 5; x++) {
-            carta = new Carta("Estomago", "Verde");
+            carta = new Carta("Estomago", "Verde", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 5; x++) {
-            carta = new Carta("Corazon", "Rojo");
+            carta = new Carta("Corazon", "Rojo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 5; x++) {
-            carta = new Carta("Hueso", "Amarillo");
+            carta = new Carta("Hueso", "Amarillo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 1; x++) {
-            carta = new Carta("Organo", "Multicolor");
+            carta = new Carta("Organo", "Multicolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Virus", "Rojo");
+            carta = new Carta("Virus", "Rojo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Virus", "Verde");
+            carta = new Carta("Virus", "Verde", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Virus", "Amarillo");
+            carta = new Carta("Virus", "Amarillo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Virus", "Azul");
+            carta = new Carta("Virus", "Azul", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 1; x++) {
-            carta = new Carta("Virus", "Multicolor");
+            carta = new Carta("Virus", "Multicolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Amarillo");
+            carta = new Carta("Medicina", "Amarillo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Azul");
+            carta = new Carta("Medicina", "Azul", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Rojo");
+            carta = new Carta("Medicina", "Rojo", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Verde");
+            carta = new Carta("Medicina", "Verde", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 4; x++) {
-            carta = new Carta("Medicina", "Multicolor");
+            carta = new Carta("Medicina", "Multicolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 2; x++) {
-            carta = new Carta("Transplante", "Sincolor");
+            carta = new Carta("Transplante", "Sincolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 3; x++) {
-            carta = new Carta("Ladron", "Sincolor");
+            carta = new Carta("Ladron", "Sincolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 3; x++) {
-            carta = new Carta("Contagio", "Sincolor");
+            carta = new Carta("Contagio", "Sincolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 1; x++) {
-            carta = new Carta("Guante", "Sincolor");
+            carta = new Carta("Guante", "Sincolor", 0);
             masoCartas.add(carta);
         }
         for (int x = 0; x < 1; x++) {
-            carta = new Carta("ErrorMedico", "Sincolor");
+            carta = new Carta("ErrorMedico", "Sincolor", 0);
             masoCartas.add(carta);
         }
         Collections.shuffle(masoCartas);
@@ -124,12 +124,13 @@ public class ManejadorCartas {
 
     public void desecharCarta(List<Carta> cartas) {
         System.out.println(cartas.size() + " cartas puestas en pila de desecho");
+        cartas.forEach(carta -> carta.setPosicion(0));
         desecho.addAll(cartas);
     }
 
     public void moverDesechoAMaso() {
         masoCartas.addAll(desecho);
-        System.out.println("Mazo vacio " + desecho.size()+ " cartas movidas del desecho al mazo");
+        System.out.println("Mazo vacio " + desecho.size() + " cartas movidas del desecho al mazo");
         desecho.clear();
         masoCartas.forEach(carta -> carta.setCantidad(0));
     }

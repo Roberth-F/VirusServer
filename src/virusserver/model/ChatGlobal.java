@@ -6,8 +6,6 @@
 package virusserver.model;
 
 import com.google.gson.annotations.SerializedName;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.xml.internal.ws.developer.Serialization;
 /**
  *
  * @author LordLalo

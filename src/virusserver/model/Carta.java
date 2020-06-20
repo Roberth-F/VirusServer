@@ -19,10 +19,13 @@ public class Carta {
     private int cantidad;
     @SerializedName("color")
     private String color;
+    @SerializedName("posicion")
+    private int posicion;
 
-    public Carta(String tipo, String color) {
+    public Carta(String tipo, String color, int posicion) {
         this.tipoCarta = tipo;
         this.color = color;
+        this.posicion = posicion;
     }
 
     public void setTipo(String tipoCarta) {
@@ -47,6 +50,14 @@ public class Carta {
 
     public int getCantidad() {
         return cantidad;
+    }
+
+    public int getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(int posicion) {
+        this.posicion = posicion;
     }
 
 }

@@ -24,9 +24,11 @@ public class Actualizacion {
     private String listaJugadores;
     @SerializedName("refresher")
     private List<Jugador> refresherList;
-
+    @SerializedName("Ganador")
+    private Jugador ganador;
     @SerializedName("nuevosMensajes")
     private String listaMensajes;
+
     /**
      * Prepara una actualización de lista de jugadores.
      *
@@ -35,6 +37,12 @@ public class Actualizacion {
     public void actualizarListaJugadores(String json) {
         action = "nuevosJugadores";
         listaJugadores = json;
+    }
+
+    public void actualizacionDeGane(Jugador ganador) {
+        this.modulo = "SalaDeJuego";
+        action = "declararGanador";
+        this.ganador = ganador;
     }
 
     public void cargarDatosNuevos(String json) {
@@ -49,10 +57,12 @@ public class Actualizacion {
         this.refresherList = jugList;
     }
 
-     public  void actualizarDatosCHAT(String json) {
+    public void actualizarDatosCHAT(String json) {
         this.modulo = "SalaChat";
         action = "actualizarListaMensaje";
-        listaMensajes = json;}
+        listaMensajes = json;
+    }
+
     /**
      *
      * Prepara actalización que vuelve host al jugador que la reciba.
