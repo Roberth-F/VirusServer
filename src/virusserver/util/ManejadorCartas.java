@@ -21,7 +21,8 @@ public class ManejadorCartas {
     private final ArrayList<Carta> desecho = new ArrayList();
 
     public void ListarCartas() {
-
+        masoCartas.clear();
+        desecho.clear();
         Carta carta;
         for (int x = 0; x < 5; x++) {
             carta = new Carta("Cerebro", "Azul", 0);

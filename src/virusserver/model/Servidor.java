@@ -37,7 +37,6 @@ public class Servidor {
     private List<ChatGlobal> chatGlobal = new ArrayList<ChatGlobal>();
 
     public Servidor() {
-
         peticiones = new LinkedList<>();
         jugadoresConectados = new ArrayList();
     }
@@ -58,6 +57,16 @@ public class Servidor {
                 this.peticiones.add(pet);
             }
         }
+    }
+
+    private void reset() {
+        peticiones.clear();
+        turnoActual = -1;
+        etapaJuego = 0;
+        jugadoresConectados.clear();
+        votosDeInicio = 0;
+        hayGanador = false;
+        chatGlobal.clear();
     }
 
     @SuppressWarnings("SleepWhileInLoop")
@@ -245,8 +254,12 @@ public class Servidor {
             }
             if (organosSanos > 3) {
                 declararUnGanador(jugador);
+                etapaJuego = 4;
             }
         });
+        if (etapaJuego == 4) {                                        //Si ha habido un ganador.
+            reset();
+        }
     }
 
     public void declararUnGanador(Jugador ganador) {
